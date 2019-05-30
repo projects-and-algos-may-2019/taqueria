@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Like Status</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.css') }}">
+</head>
+<body>
+    <div class="">
+            <a href="/bright_ideas" class="header_text"> Bright Ideas</a>
+            <a href="/" class="header_text"> Log Out</a>
+    </div>
+
+    <div class="idea-details">   
+        <form action="/users/{{idea.owner.id}}" class="twt-actions" method = "POST">
+            <input type="hidden" name="v_user_id" value="{{idea.owner.id}}">
+            <input type="submit" value="{{idea.owner.name}}" class="linkButton">
+        </form>
+        <label>says:</label> 
+        <p class="ide-text border border-secondary rounded">{{idea.idea}}</p>
+    </div>
+
+    <h5 class="userdata" >People who liked this post:</h5>
+    <table class="table table-bordered">
+        <tr>
+            <th>Alias</th>
+            <th>Name</th>
+        </tr>
+        {%for like in likes%}
+        <tr>
+            <td> <form action="/users/{{like.user_liked.id}}" class="twt-actions" method = "POST">
+                <input type="hidden" name="v_user_id" value="{{like.user_liked.id}}">
+                <input type="submit" value="{{like.user_liked.alias}}" class="linkButton">
+            </form></td>
+            <td>{{like.user_liked.name}}</td>
+        </tr>
+        {%endfor%}
+    </table>
+
+</body>
+</html>

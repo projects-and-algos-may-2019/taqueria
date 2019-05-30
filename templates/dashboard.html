@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Users Dashboard</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.css') }}">
+    <style>
+            .error{color: red;}
+    </style>
+</head>
+<body>
+    <div class="header">
+       
+        <h4>Welcome {{name}}!</h4>
+        <a href="/" class="header_text"> Log Out</a>
+    </div>
+   
+
+    <form action="/post_idea" method="POST" class="form-control" id="postIdea">
+        <input type="text" name="idea" class="ideabox border" placeholder="Post somethign witty here....">
+        <input type="hidden" name="user_id" value="{{user_id}}">
+        <input type="submit" value="Idea!" class="btn btn-primary"> 
+    </form>
+
+    {% with messages = get_flashed_messages() %}     <!-- declare a variable called messages -->
+    {% if messages %}                            <!-- check if there are any messages -->
+        {% for message in messages %}            <!-- loop through the messages -->
+            <p class="error">{{message}}</p>                   <!-- display each message in a paragraph tag -->
+        {% endfor %}
+    {% endif %}
+    {% endwith %} 
+
+    {% for idea in ideas%}
+    <div>
+       
+        <form action="/users/{{idea[1].id}}" class="twt-actions" method = "POST">
+            <input type="hidden" name="v_user_id" value="{{idea[1].id}}">
+            <input type="submit" value="{{idea[1].alias}}" class="linkButton">
+        </form>
+        <label>says:</label> 
+        <p class="ide-text border border-secondary rounded">{{idea[0].idea}}</p>
+        <div class="">
+            <form action="/like" class="twt-actions" method = "POST">
+                <input type="hidden" name="idea_id" value="{{idea[0].id}}">
+                <input type="hidden" name="user_id" value="{{user_id}}">
+                <input type="submit" value="Like" class="linkButton">
+            </form>
+        
+            <form action="/bright_ideas/{{idea[0].id}}" class="twt-actions" method = "POST">
+                <input type="hidden" name="v_idea_id" value="{{idea[0].id}}">
+                <input type="submit" value="{{idea_likes[idea[0].id]}}" class="linkButton"> <span>liked this</span>
+            </form>
+       
+    
+
+            {%if user_id == idea[1].id %}
+            <form action="/delete" class="twt-actions" method = "POST" >
+                <input type="hidden" name="which_idea" value="{{idea[0].id}}">
+                <input type="submit" name="{{idea[0].id}}"  value="Delete" class="linkButton">
+            </form>
+            {%endif%}
+         </div>
+           
+    </div>
+    {%endfor%}
+       
+   
+</body>
+</html>

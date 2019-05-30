@@ -1,0 +1,9 @@
+{% if found == True %}
+<p class="error">Username has been taken.</p>
+{% endif %}
+{% if found == False %}
+<script>
+     $("input[type=submit]").removeAttr('disabled');
+</script>
+<p class="success"> This username is available</p>
+{% endif %}

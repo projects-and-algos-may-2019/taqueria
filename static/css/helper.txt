@@ -1,0 +1,34 @@
+sudo vim /etc/systemd/system/bright_ideas.service
+
+[Unit]
+Description=Gunicorn instance to serve bright_ideas
+After=network.target
+[Service]
+User=eldor
+Group=www-data
+WorkingDirectory=/home/eldor/bright_ideas
+Environment="PATH=/home/eldor/bright_ideas/venv/bin"
+ExecStart=/home/eldor/bright_ideas/venv/bin/gunicorn --workers 3 --bind unix:bright_ideas.sock -m 007 wsgi:application
+[Install]
+WantedBy=multi-user.target
+
+
+sudo systemctl start bright_ideas
+sudo systemctl enable bright_ideas
+
+
+sudo vim /etc/nginx/sites-available/bright_ideas
+
+server {
+    listen 80;
+    server_name 18.223.121.30;
+    location / {
+        include proxy_params;
+        proxy_pass http://unix:/home/eldor/bright_ideas/bright_ideas.sock;
+    }
+}
+
+
+
+
+sudo ln -s /etc/nginx/sites-available/bright_ideas /etc/nginx/sites-enabled
