@@ -5,7 +5,7 @@ from flask_migrate import Migrate
 
 app = Flask(__name__)
 app.secret_key = "keep it secret keep it safe"
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///brigth_ideas.db"
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///taqueria.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 bcrypt = Bcrypt(app)
 db = SQLAlchemy(app) 
