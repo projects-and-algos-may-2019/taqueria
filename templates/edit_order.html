@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Users Dashboard</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.css') }}">
+</head>
+<body>
+    <div class="header">
+        <h4>Welcome {{name}}!</h4>
+        <h4>Place Your Order</h4>
+        <a href="/" class="header_text"> Log Out</a>
+    </div>
+
+    <form action="/add_to_cart" method="POST" class="form-control" id="add_to_cart">
+        <h4>Tacos</h4>
+            <table>
+                <tr>
+                    <th>Option</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                </tr>
+                {% for item in items%}
+                {%if item.cat_id ==1 %}
+                <tr>
+                    <td><input type="hidden" name="{{item.name}}" value="{{item.name}}"> {{item.name}} </td>
+                    <td><input type="hidden" name="{{item.price}}" value="{{item.price}}"> {{item.price}} </td>
+                    <input type="hidden" name="item_cat" value="{{item.cat_id}}">
+                    <td><input type="text" name = "{{item.id}}" id="qty" value="{{item.quantity}}"></td>
+                </tr>
+                {%endif%}
+                {%endfor%}
+            </table>        
+
+        <h4>Drinks</h4>
+        <table>
+            <tr>
+                <th>Option</th>
+                <th>Price</th>
+                <th>Quantity</th>
+            </tr>
+            {% for item in items%}
+            {%if item.cat_id ==2 %}
+            <tr>
+                <td><input type="hidden" name="{{item.name}}" value="{{item.name}}"> {{item.name}} </td>
+                <td><input type="hidden" name="{{item.price}}" value="{{item.price}}"> {{item.price}} </td>
+                <input type="hidden" name="item_cat" value="{{item.cat_id}}">
+                <td><input type="text" name = "{{item.id}}" id="qty" value="{{item.quantity}}"></td>
+            </tr>
+            {%endif%}
+            {%endfor%}
+        </table>        
+        <input type="hidden" name="user_id" value="{{user_id}}">
+        <input type="hidden" name="user_name" value="{{name}}">
+        <input type="submit" value="Edit Order" class="btn btn-primary"> 
+    </form>
+    <form action="/cancel" method="POST" class="form-control" id="cancel">
+        <input type="submit" value="Cancel Order" class="btn btn-secondary"> 
+    </form>
+</body>
+</html>

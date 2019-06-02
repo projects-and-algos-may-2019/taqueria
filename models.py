@@ -87,8 +87,7 @@ class Product(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(145))
     price = db.Column(db.Float)
-    # user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-
+    cat_id = db.Column(db.Integer, db.ForeignKey('category.id'))
     created_at = db.Column(db.DateTime, server_default=func.now())   
     updated_at = db.Column(db.DateTime, server_default=func.now(), onupdate=func.now())
     
@@ -129,6 +128,14 @@ class Product(db.Model):
     #         print("Skipped if Skipped if Skipped if Skipped if Skipped if Skipped if Skipped if Skipped if ")
     #         return new_like
 
+################################################ Category Table  ########################################################
+
+class Category(db.Model):
+    __tablename__ = 'category'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(125), nullable=False)
+    category_products = db.relationship('Product', backref='product_cat')
+
 ################################################ Purchases Table  ########################################################
 
 class Purchases(db.Model):	
@@ -140,6 +147,14 @@ class Purchases(db.Model):
     # liked = db.relationship('Likes', backref= 'idea_liked')
     created_at = db.Column(db.DateTime, server_default=func.now())
     updated_at = db.Column(db.DateTime, server_default=func.now(), onupdate=func.now())
+
+
+    @classmethod
+    def add_new_purchase(cls, user_data):
+        purchase_to_add = cls(user_id=user_data["user_id"], total_amount=user_data["total"])
+        db.session.add(purchase_to_add)
+        db.session.commit()
+        return purchase_to_add
     
 
 
