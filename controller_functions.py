@@ -24,7 +24,7 @@ def add_newuser():
         session["user_id"] = new_user.id
         session["name"] = new_user.name
         print(session["user_id"])
-        print(session["alias"])
+        print(session["name"])
         return redirect("/orders")
 
 def search():
@@ -46,9 +46,7 @@ def login():
             list_of_all_users = Users.query.all()
             result = Users.query.filter_by(email = request.form["username"]).first()
             session["user_id"] = result.id
-            print(result.id)
             session["name"] = result.name
-            session["alias"] = result.alias
             # return render_template("users.html", users = list_of_all_users, name = session["first_name"], user_id = session["user_id"])
             return redirect("/orders")
    

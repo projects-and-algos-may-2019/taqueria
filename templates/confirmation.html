@@ -6,6 +6,25 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>User Profile</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.css') }}">
+    <style>
+    table {
+        margin: 70px auto;
+    }
+    .error {
+        color: red;
+    }
+    h2 {
+        margin-right: 30px;
+        display: inline-block;
+    }
+    h3 {
+        margin-top: 40px;
+    }
+    #view_cart {
+        vertical-align: top;
+        display: inline-block;
+    }
+    </style>
 </head>
 <body>
     <div class="">
@@ -13,7 +32,7 @@
             <a href="/" class="header_text"> Log Out</a>
     </div>
     <h2> {{user}} please review your order: </h2>
-    <form action="/view_cart" method="POST" class="form-control" id="view_cart">
+    <form action="/view_cart" method="POST" id="view_cart">
         <input type="hidden" name="user_id" value="{{user_id}}">
         <input type="hidden" name="user_name" value="{{name}}">
         {% for item in cart_content%}
@@ -21,22 +40,27 @@
 
         {%endfor%}
         <input type="submit" value="Your Cart ({{total_qty}} Items)" class="btn btn-primary"> 
+
     </form>
-        <h3 >Subtotal</h3>
-        <form action="/place_order" method="POST" class="form-control" id="place_order">
-            <table>
-                {% for item in cart_content%}
-                <tr>
-                    <td><input type="hidden" name="{{item.amount}}" value="{{item.amount}}"> {{item.amount}}</td>
-                    <td><input type="hidden" name="{{item.category}}" value="{{item.category}}">{{item.category}}({{item.item_name}}) x {{item.quantity}} </td>
-                </tr>
-                {%endfor%}
-            </table>        
-        <h3>Your total: {{total}}</h3>
+    {% if cart_content %}
+    <h3 >Subtotal</h3>
+    <form action="/place_order" method="POST" class="form-control" id="place_order">
+        <table>
+            {% for item in cart_content%}
+            <tr>
+                <td><input type="hidden" name="{{item.amount}}" value="{{item.amount}}"> ${{item.amount}}</td>
+                <td><input type="hidden" name="{{item.category}}" value="{{item.category}}">{{item.category}}({{item.item_name}}) x {{item.quantity}} </td>
+            </tr>
+            {%endfor%}
+        </table>        
+        <h3>Your total: ${{total}}</h3>
         <input type="hidden" name="user_id" value="{{user_id}}">
         <input type="hidden" name="user_name" value="{{name}}">
         <input type="hidden" name="total" value="{{total}}">
         <input type="submit" value="Submit Order" class="btn btn-primary"> 
+        {% else %}
+        <h3 class="error">No Items in Cart</h3>
+        {% endif %}
     </form>
 </body>
 </html>

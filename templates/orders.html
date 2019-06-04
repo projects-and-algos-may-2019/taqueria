@@ -7,7 +7,21 @@
     <title>Users Dashboard</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.css') }}">
     <style>
-            .error{color: red;}
+        .error{color: red;}
+
+        form h4 {
+            text-align: left;
+            margin-left: 60px;
+        }
+
+        form table {
+            margin: 0px auto;
+        }
+        
+        form table th {
+            padding: 7px;
+        }
+
     </style>
 </head>
 <body>
@@ -26,41 +40,41 @@
     {% endwith %} 
     <form action="/add_to_cart" method="POST" class="form-control" id="add_to_cart">
         <h4>Tacos</h4>
-            <table>
-                <tr>
-                    <th>Option</th>
-                    <th>Price</th>
-                    <th>Quantity</th>
-                </tr>
-                {% for item in items%}
-                {%if item.cat_id ==1 %}
-                <tr>
-                    <td><input type="hidden" name="{{item.name}}" value="{{item.name}}"> {{item.name}} </td>
-                    <td><input type="hidden" name="{{item.price}}" value="{{item.price}}"> {{item.price}} </td>
-                    <input type="hidden" name="item_cat" value="{{item.cat_id}}">
-                    <td><input type="text" name = "{{item.id}}" id="qty" placeholder="0"></td>
-                </tr>
-                {%endif%}
-                {%endfor%}
-            </table>        
+        <table>
+            <tr>
+                <th>Option</th>
+                <th>Price</th>
+                <th>Quantity</th>
+            </tr>
+            {% for item in items%}
+            {%if item.cat_id ==1 %}
+            <tr>
+                <td><input type="hidden" name="{{item.name}}" value="{{item.name}}"> {{item.name}} </td>
+                <td><input type="hidden" name="{{item.price}}" value="{{item.price}}"> ${{item.price}} </td>
+                <input type="hidden" name="item_cat" value="{{item.cat_id}}">
+                <td><input type="text" name = "{{item.id}}" id="qty" placeholder="0"></td>
+            </tr>
+            {%endif%}
+            {%endfor%}
+        </table>        
         <h4>Drinks</h4>
-            <table>
-                <tr>
-                    <th>Option</th>
-                    <th>Price</th>
-                    <th>Quantity</th>
-                </tr>
-                {% for item in items%}
-                {%if item.cat_id ==2 %}
-                <tr>
-                    <td><input type="hidden" name="{{item.name}}" value="{{item.name}}"> {{item.name}} </td>
-                    <td><input type="hidden" name="{{item.price}}" value="{{item.price}}"> {{item.price}} </td>
-                    <input type="hidden" name="item_cat" value="{{item.cat_id}}">
-                    <td><input type="text" name = "{{item.id}}" id="qty" placeholder="0"></td>
-                </tr>
-                {%endif%}
-                {%endfor%}
-            </table>        
+        <table>
+            <tr>
+                <th>Option</th>
+                <th>Price</th>
+                <th>Quantity</th>
+            </tr>
+            {% for item in items%}
+            {%if item.cat_id ==2 %}
+            <tr>
+                <td><input type="hidden" name="{{item.name}}" value="{{item.name}}"> {{item.name}} </td>
+                <td><input type="hidden" name="{{item.price}}" value="{{item.price}}"> ${{item.price}} </td>
+                <input type="hidden" name="item_cat" value="{{item.cat_id}}">
+                <td><input type="text" name = "{{item.id}}" id="qty" placeholder="0"></td>
+            </tr>
+            {%endif%}
+            {%endfor%}
+        </table>        
         
 
         <input type="hidden" name="user_id" value="{{user_id}}">

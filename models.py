@@ -36,7 +36,7 @@ class Users(db.Model):
             flash("Please provide a valid email")
         if len(user_data["password"]) < 8:
             is_valid = False
-            flash("Password should be at least 8 characters")
+            flash("Password must be at least 8 characters")
         if user_data["password"] != user_data["cpassword"]:
             is_valid = False
             flash("Passwords do not match")
