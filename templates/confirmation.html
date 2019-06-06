@@ -40,11 +40,10 @@
 
         {%endfor%}
         <input type="submit" value="Your Cart ({{total_qty}} Items)" class="btn btn-primary"> 
-
     </form>
     {% if cart_content %}
     <h3 >Subtotal</h3>
-    <form action="/place_order" method="POST" class="form-control" id="place_order">
+    <form action="/place_order" method="POST" class="form-control" id="payment-form">
         <table>
             {% for item in cart_content%}
             <tr>
@@ -57,10 +56,34 @@
         <input type="hidden" name="user_id" value="{{user_id}}">
         <input type="hidden" name="user_name" value="{{name}}">
         <input type="hidden" name="total" value="{{total}}">
-        <input type="submit" value="Submit Order" class="btn btn-primary"> 
+
+
+        <div class="form-row ">
+                <label for="card-element">
+                  Credit or debit card
+                </label>
+                <div id="card-element" class="form-control StripeElement StripeElement--empty StripeElement--invalid">
+                  <!-- A Stripe Element will be inserted here. -->
+                </div>
+            
+                <!-- Used to display form errors. -->
+                <div id="card-errors" role="alert"></div>
+
+                <input type="submit" value="Submit Payment ($ {{total}})" class="btn btn-primary"> 
+                <!-- <button>Submit Payment</button> -->
+              </div>
+
+
+
+       
+       
         {% else %}
         <h3 class="error">No Items in Cart</h3>
         {% endif %}
     </form>
+
+    <script src="https://js.stripe.com/v3/"></script>
+    <script src="{{url_for('static', filename='payment.js')}}"></script>
+   
 </body>
 </html>

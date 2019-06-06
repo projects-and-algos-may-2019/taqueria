@@ -54,6 +54,11 @@ class Users(db.Model):
         if len(user_data["password"]) < 3:
             is_valid = False
             flash("Password should be at least 8 characters")
+        print(result)
+        print("RESULT*****************************")
+        if result==None:
+            is_valid = False
+            flash("Incorrect User name or Passwords!!")
         if result:
             if not bcrypt.check_password_hash(result.password, user_data['password']):
                 is_valid = False

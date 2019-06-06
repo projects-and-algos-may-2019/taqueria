@@ -1,6 +1,15 @@
 from flask import Flask, render_template, redirect, request, session, flash
+import stripe
 from config import app, db
 from models import Users, Product, Purchases, Product_purchases, Category
+
+
+pub_key = 'pk_test_LnWQOJnxHrgUjxeLPUQHOFf100IknAvSln'
+secret_key = 'sk_test_pcRm5ZoW1TZHWdWGW8dAAqqZ00lNAjivvG'
+
+
+stripe.api_key = secret_key
+
 
 def index():
     
@@ -47,6 +56,7 @@ def login():
             result = Users.query.filter_by(email = request.form["username"]).first()
             session["user_id"] = result.id
             session["name"] = result.name
+            session['username'] = request.form["username"]
             # return render_template("users.html", users = list_of_all_users, name = session["first_name"], user_id = session["user_id"])
             return redirect("/orders")
    
@@ -94,7 +104,7 @@ def add_to_cart():
     user_id = session["user_id"]
 
 
-    return render_template('confirmation.html', cart_content=cart_content, user = user, total = total, user_id = user_id, total_qty = total_qty) 
+    return render_template('confirmation.html', cart_content=cart_content, user = user, total = total, user_id = user_id, total_qty = total_qty, pub_key=pub_key) 
 
 def order_complete():
     user = session["name"]
@@ -107,6 +117,16 @@ def submit_order():
     print(request.form)
 
     new_order = Purchases.add_new_purchase(request.form)
+
+    customer = stripe.Customer.create(email=session['username'], source = request.form['stripeToken'])
+    charge = stripe.Charge.create(
+        customer = customer.id,
+        amount = int(float(request.form['total'])*100),
+        currency = 'usd',
+        description = 'sales'
+
+    )
+
 
     return redirect("/complete")
 
